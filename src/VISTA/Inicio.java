@@ -1,4 +1,4 @@
-package GUI;
+package VISTA;
 
 import java.awt.BorderLayout;
 import java.awt.EventQueue;
@@ -49,6 +49,7 @@ public class Inicio extends JFrame implements ActionListener {
 	 * Create the frame.
 	 */
 	public Inicio() {
+		setResizable(false);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setLocationRelativeTo(null);
 		setBounds(100, 100, 706, 486);
@@ -59,8 +60,8 @@ public class Inicio extends JFrame implements ActionListener {
 		
 		lblNewLabel = new JLabel("PELUQUERIA CANINA");
 		lblNewLabel.setHorizontalAlignment(SwingConstants.CENTER);
-		lblNewLabel.setFont(new Font("Segoe UI Black", Font.PLAIN, 15));
-		lblNewLabel.setBounds(278,36, 161, 16);
+		lblNewLabel.setFont(new Font("Segoe UI Black", Font.BOLD, 16));
+		lblNewLabel.setBounds(255,37, 200, 23);
 		contentPane.add(lblNewLabel);
 		
 		btnCargarDatos = new JButton("Cargar Datos");
@@ -71,6 +72,7 @@ public class Inicio extends JFrame implements ActionListener {
 		contentPane.add(btnCargarDatos);
 		
 		btnVerDatos = new JButton("Ver Datos");
+		btnVerDatos.addActionListener(this);
 		btnVerDatos.setBackground(Color.LIGHT_GRAY);
 		btnVerDatos.setIcon(new ImageIcon(Inicio.class.getResource("/GUI/iconos_Java/Document.gif")));
 		btnVerDatos.setBounds(72, 214, 142, 30);
@@ -90,14 +92,21 @@ public class Inicio extends JFrame implements ActionListener {
 	public void actionPerformed(ActionEvent e) {
 		if (e.getSource() == btnCargarDatos) {
 			actionPerformedBtnCargarDatosJButton(e);
+		}else if(e.getSource() == btnVerDatos) {
+			actionPerformedBtnVerDatosJButton(e);
 		}
 	}
 	protected void actionPerformedBtnCargarDatosJButton(ActionEvent e) {
-		//JFrame frmae = new JFrame();
-		//frmae.setVisible(true);
-		//frmae.setBounds(10, 10, 100,100);
 		Registro registro = new Registro();
 		registro.setVisible(true);
+		registro.setLocationRelativeTo(null);
 		registro.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
+	}
+	
+	protected void actionPerformedBtnVerDatosJButton(ActionEvent e) {
+		CRUD crud = new CRUD();
+		crud.setVisible(true);
+		crud.setLocationRelativeTo(null);
+
 	}
 }
