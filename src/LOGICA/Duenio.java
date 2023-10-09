@@ -2,7 +2,7 @@ package LOGICA;
 
 public class Duenio {
 
-	private int idDuenio;
+	private static int idDuenio;
 	private String nombreCliente;
 	private String telfDueno;
 	

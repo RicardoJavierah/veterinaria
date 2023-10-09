@@ -33,7 +33,6 @@ public class DuenioModel {
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-			System.out.println("0");
 			salida = 0;
 		}finally {
 			
@@ -106,7 +105,7 @@ public class DuenioModel {
 			ResultSet rs =null;
 			
 			ArrayList<Duenio> arrayList = new ArrayList<Duenio>();
-			Duenio obj = new Duenio();
+			
 			
 			try {
 				conexion = cn.conexion();
@@ -114,6 +113,8 @@ public class DuenioModel {
 				rs = stm.executeQuery("select *  from tb_duenio");
 				
 				while(rs.next()) {
+					Duenio obj = new Duenio();
+					
 					obj.setIdDuenio(rs.getInt(1));
 					obj.setNombreCliente(rs.getString(2));
 					obj.setTelfDueno(rs.getString(3));		
@@ -143,4 +144,58 @@ public class DuenioModel {
 			}
 			return arrayList;
 	}
+
+	public void actualizarDuenio(Duenio obj,String nombre,String telf) {
+		MySqlDBConexion cn = new MySqlDBConexion();
+		Connection conexion = null;
+		PreparedStatement pstm = null;
+		
+		
+		try {
+			conexion = cn.conexion();
+			pstm = conexion.prepareStatement("update tb_duenio set nombre_cliente =?, telf_duenio =? where nombre_cliente =? and telf_duenio=?");
+			pstm.setString(1, obj.getNombreCliente());
+			pstm.setString(2,obj.getTelfDueno());
+			pstm.setString(3, nombre);
+			pstm.setString(4,telf);
+			
+			pstm.executeUpdate();
+		
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}finally {
+			
+			try {
+				if(conexion!=null) {
+					conexion.close();
+				}
+				if(pstm != null) {
+					pstm.close();
+				}}catch (Exception e) {
+					e.printStackTrace();
+				}
+		
+		}}
+	
+	public void eliminarDuenio(Duenio obj) {
+		MySqlDBConexion cn = new MySqlDBConexion();
+		Connection coneccion = null;
+		PreparedStatement pstm = null;
+		
+		try {
+			coneccion = cn.conexion();
+			pstm = coneccion.prepareStatement("delete from tb_duenio where nombre_cliente =? and telf_duenio =?");
+			pstm.setString(1,obj.getNombreCliente());
+			pstm.setString(2,obj.getTelfDueno());
+			
+			pstm.executeUpdate();
+			
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		
+	}
 }
+

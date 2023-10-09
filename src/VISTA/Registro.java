@@ -10,6 +10,7 @@ import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
 import LOGICA.Controlador;
+import LOGICA.Duenio;
 import UTIL.Validacion;
 
 import javax.swing.JLabel;
@@ -224,6 +225,7 @@ public class Registro extends JFrame implements ActionListener {
 			Controlador controlador = new Controlador();
 			if(controlador.guardarDuenioMascota(nombreCliente,telfDueno,numCliente,nombreMascota,raza, color, alergia, atencion, observaciones)) {
 				limpiar();
+				
 				mensaje("Se Registro Correctamente a la Base de Datos");
 			}else {
 				mensaje("Ingresa un Número de cliente distinto");

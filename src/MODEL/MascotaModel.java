@@ -40,7 +40,6 @@ public class MascotaModel {
 
 		} catch (SQLException e) {
 			e.printStackTrace();
-			System.out.println("0");
 			salida = 0;
 			
 		}finally {
@@ -68,13 +67,13 @@ public class MascotaModel {
 		ResultSet rs = null;
 		
 		ArrayList<Mascota> arrayList = new ArrayList<Mascota>();
-		Mascota obj = new Mascota();
 		try {
 			conexion = cn.conexion();
 			stm = conexion.createStatement();
 			rs = stm.executeQuery("select * from tb_mascota");
 			
 			while(rs.next()){
+				Mascota obj = new Mascota();
 				obj.setNumCliente(rs.getInt(1));
 				obj.setNombreMascota(rs.getString(2));
 				obj.setRaza(rs.getString(3));
@@ -82,7 +81,8 @@ public class MascotaModel {
 				obj.setAlergia(rs.getString(5));
 				obj.setAtencion(rs.getString(6));
 				obj.setObservaciones(rs.getString(7));
-			
+				int id = rs.getInt(8);
+
 				arrayList.add(obj);
 			}
 			
@@ -92,6 +92,65 @@ public class MascotaModel {
 		}
 		return arrayList;
 	}
-	
+
+	public void actualizarMascota(Mascota obj,int id_cliente) {
+		MySqlDBConexion cn = new MySqlDBConexion();
+		Connection conexion = null;
+		PreparedStatement pstm = null;
+		
+		try {
+			conexion = cn.conexion();
+			
+			pstm = conexion.prepareStatement("update tb_mascota set id_mascota =?, nombre_mascota =?, raza =?,color =?, alergia =?, atencion =?,observacion =? where id_mascota =?");
+			pstm.setInt(1, obj.getNumCliente());
+			pstm.setString(2, obj.getNombreMascota());
+			pstm.setString(3, obj.getRaza());
+			pstm.setString(4, obj.getColor());
+			pstm.setString(5, obj.getAlergia());
+			pstm.setString(6, obj.getAtencion());
+			pstm.setString(7, obj.getObservaciones());
+			pstm.setInt(8, id_cliente);
+
+			
+			pstm.executeUpdate();			
+			
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}finally {
+			try {
+				if(conexion != null) {
+					conexion.close();
+				}
+				
+				if(pstm != null){
+					pstm.close();
+				}
+				
+				
+			} catch (Exception e2) {
+				e2.printStackTrace();
+			}
+		}
+	}
+
+	public void eliminarMascota(Mascota obj) {
+		MySqlDBConexion cn = new MySqlDBConexion();
+		Connection coneccion = null;
+		PreparedStatement pstm = null;
+		
+		try {
+			coneccion = cn.conexion();
+			pstm = coneccion.prepareStatement("delete from tb_mascota where id_mascota =?");
+			pstm.setInt(1,obj.getNumCliente());
+			
+			pstm.executeUpdate();
+			
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		
+	}
 
 }

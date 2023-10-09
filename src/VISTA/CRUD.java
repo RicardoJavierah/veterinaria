@@ -35,8 +35,10 @@ import java.awt.Color;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.awt.event.ActionEvent;
+import java.awt.event.MouseListener;
+import java.awt.event.MouseEvent;
 
-public class CRUD extends JFrame implements ActionListener {
+public class CRUD extends JFrame implements ActionListener, MouseListener {
 
 	private JPanel contentPane;
 	private JLabel lblNewLabel;
@@ -62,7 +64,6 @@ public class CRUD extends JFrame implements ActionListener {
 	private JButton btnIngresar;
 	private JButton btnEliminar;
 	private JButton btnActualizar;
-	private JButton btnBuscar;
 	private JButton btnlista;
 	private JScrollPane scrollPane_1;
 	private JTable table_1;
@@ -72,12 +73,13 @@ public class CRUD extends JFrame implements ActionListener {
 	
 	
 	
+	
 	//private ArrayList<Object> data = new ArrayList<Object>();
 
 	public CRUD() {
 		setResizable(false);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100,100, 940, 650);
+		setBounds(0,0, 940, 650);
 		setLocationRelativeTo(null);
 		contentPane = new JPanel();
 		contentPane.setBackground(Color.WHITE);
@@ -182,24 +184,21 @@ public class CRUD extends JFrame implements ActionListener {
 		contentPane.add(btnIngresar);
 		
 		btnEliminar = new JButton("ELIMINAR");
+		btnEliminar.addActionListener(this);
 		btnEliminar.setBackground(Color.LIGHT_GRAY);
 		btnEliminar.setBounds(161, 268, 115, 21);
 		contentPane.add(btnEliminar);
 		
 		btnActualizar = new JButton("ACTUALIZAR");
+		btnActualizar.addActionListener(this);
 		btnActualizar.setBackground(Color.LIGHT_GRAY);
 		btnActualizar.setBounds(280, 268, 115, 21);
 		contentPane.add(btnActualizar);
 		
-		btnBuscar = new JButton("BUSCAR");
-		btnBuscar.setBackground(Color.LIGHT_GRAY);
-		btnBuscar.setBounds(400, 268, 115, 21);
-		contentPane.add(btnBuscar);
-		
 		btnlista = new JButton("LISTAR");
 		btnlista.addActionListener(this);
 		btnlista.setBackground(Color.LIGHT_GRAY);
-		btnlista.setBounds(521, 268, 115, 21);
+		btnlista.setBounds(400, 268, 115, 21);
 		contentPane.add(btnlista);
 		
 		scrollPane_1 = new JScrollPane();
@@ -211,6 +210,7 @@ public class CRUD extends JFrame implements ActionListener {
 		defaulTableModel = new DefaultTableModel(data,nameColumn);
 		
 		table_1 = new JTable();
+		table_1.addMouseListener(this);
 		table_1.setModel(defaulTableModel);
 		
 		//Centrar columnas Jtable
@@ -229,12 +229,36 @@ public class CRUD extends JFrame implements ActionListener {
 		//column1.setPreferredWidth(100);
 	
 		scrollPane_1.setViewportView(table_1);
-		
-		
-	
-		
 	}
+	
+	public void mouseClicked(MouseEvent e) {
+		if (e.getSource() == table_1) {
+			mouseClickedTable_1JTable(e);
+		}
+	}
+		
+	public void mouseEntered(MouseEvent e) {
+	}
+	public void mouseExited(MouseEvent e) {
+	}
+	public void mousePressed(MouseEvent e) {
+	}
+	public void mouseReleased(MouseEvent e) {
+	}
+	protected void mouseClickedTable_1JTable(MouseEvent e) {
+		Object[] datos = idMascotaNombreDuenioTelf();
+		//System.out.println(datos[0]);
+		System.out.println(idMascotaNombreDuenioTelf()[0]);
+		buscar();
+	}
+	
 	public void actionPerformed(ActionEvent e) {
+		if (e.getSource() == btnEliminar) {
+			actionPerformedBtnEliminarJButton(e);
+		}
+		if (e.getSource() == btnActualizar) {
+			actionPerformedBtnActualizarJButton(e);
+		}
 		if (e.getSource() == btnlista) {
 			actionPerformedBtnlistaMascotaMascotarJButton(e);
 		}
@@ -242,7 +266,8 @@ public class CRUD extends JFrame implements ActionListener {
 			actionPerformedBtnIngresarJButton(e);
 		}
 	}
-		
+	
+	
 	protected void actionPerformedBtnIngresarJButton(ActionEvent e) {
 		
 		int numeroCliente = Integer.parseInt(txtNumCliente.getText());
@@ -259,13 +284,29 @@ public class CRUD extends JFrame implements ActionListener {
 		if(validacion) {
 			defaulTableModel.addRow(new Object[] {numeroCliente,nombreMascota,raza,color,alergia,atencion,nombreDuenio,telf,observacion});
 			controlador.guardarDuenioMascota(nombreDuenio, telf, numeroCliente, nombreMascota, raza, color, alergia, atencion, observacion);
-
 		}
-		//defaulTableModel.addRow(new Object[] {numeroCliente,nombreMascota,raza,color,alergia,atencion,nombreDuenio,telf,observacion});
-		//controlador.guardarDuenioMascota(nombreDuenio, telf, numeroCliente, nombreMascota, raza, color, alergia, atencion, observacion);
-	}
+		//btnlista.setEnabled(true);
+		}
 	
+	protected void actionPerformedBtnActualizarJButton(ActionEvent e) {
+		Object[] datos = idMascotaNombreDuenioTelf();
+		int numeroCliente = Integer.parseInt(txtNumCliente.getText());
+		String nombreMascota = txtNameMascota.getText(); 
+		String raza = txtRaza.getText();
+		String color = txtColor.getText();
+		String alergia = String.valueOf(cboAlergia.getSelectedItem());
+		String atencion = String.valueOf(cboAtencion.getSelectedItem());
+		String nombreDuenio = txtNameDuenio.getText();
+		String telf = txtTelf.getText();
+		String observacion = txtAreaObservacion.getText();
+		
+		controlador.actualizarMascota(numeroCliente, nombreMascota, raza, color, alergia, atencion, observacion,(int)datos[0]);
+		controlador.actualizarDuenio(nombreDuenio, telf,String.valueOf(datos[1]),String.valueOf(datos[2]));
+		JOptionPane.showMessageDialog(null,"Actualizado Correctamente");
+	}	
 	protected void actionPerformedBtnlistaMascotaMascotarJButton(ActionEvent e) {
+		
+		defaulTableModel.setRowCount(0);
 		ArrayList<Mascota> listaMascotaMascota = controlador.listarMascota();
 		ArrayList<Duenio> listaDuenio = controlador.listarDuenio();
 		
@@ -274,6 +315,25 @@ public class CRUD extends JFrame implements ActionListener {
 									,listaMascotaMascota.get(i).getRaza(),listaMascotaMascota.get(i).getColor(),listaMascotaMascota.get(i).getAlergia(),
 									listaMascotaMascota.get(i).getAtencion(),listaDuenio.get(i).getNombreCliente(),listaDuenio.get(i).getTelfDueno(),listaMascotaMascota.get(i).getObservaciones()});
 		}
+		//btnlista.setEnabled(false);
+		
+	}
+	
+	protected void actionPerformedBtnEliminarJButton(ActionEvent e) {
+		int numeroCliente = Integer.parseInt(txtNumCliente.getText());
+		String nombreMascota = txtNameMascota.getText(); 
+		String raza = txtRaza.getText();
+		String color = txtColor.getText();
+		String alergia = String.valueOf(cboAlergia.getSelectedItem());
+		String atencion = String.valueOf(cboAtencion.getSelectedItem());
+		String nombreDuenio = txtNameDuenio.getText();
+		String telf = txtTelf.getText();
+		String observacion = txtAreaObservacion.getText();
+		
+		controlador.eliminarMascota(numeroCliente, nombreMascota, raza, color, alergia, atencion, observacion);
+		controlador.eliminarDuenio(nombreDuenio, telf);
+		
+		mensaje("Se elimino Correctamente!!!");
 	}
 	
 	public boolean validaciones(String numeroCliente,String nombreMascota,String raza,String color,String nombreCliente,String telf, String observacion) {
@@ -311,9 +371,49 @@ public class CRUD extends JFrame implements ActionListener {
 		
 	}
 	
-	
 	private void mensaje(String msg) {
 		JOptionPane.showMessageDialog(null, msg);
 	}
+	
+	private void buscar(){
+		int fila = table_1.getSelectedRow();
+		
+		int id = (int)defaulTableModel.getValueAt(fila,0);
+		String nombreMascota = (String)defaulTableModel.getValueAt(fila,1);
+		String raza = (String)defaulTableModel.getValueAt(fila,2);
+		String color = (String)defaulTableModel.getValueAt(fila,3);
+		String alergia = (String)defaulTableModel.getValueAt(fila,4);
+		String atencion = (String)defaulTableModel.getValueAt(fila,5);
+		String nombreDuenio = (String)defaulTableModel.getValueAt(fila,6);
+		String telf = (String)defaulTableModel.getValueAt(fila,7);
+		String obs = (String)defaulTableModel.getValueAt(fila,8);
+		
+		System.out.println(id + "-" + nombreMascota + "-" + raza + "-" + color + "-" + alergia + "-" + atencion + "-" + nombreDuenio + "-" + telf + "-" + obs);
+		
+		txtNumCliente.setText(getWarningString().valueOf(id));
+		txtNameMascota.setText(nombreMascota);
+		txtRaza.setText(raza);
+		txtColor.setText(color);
+		cboAlergia.setSelectedItem(alergia);
+		cboAtencion.setSelectedItem(atencion);
+		txtNameDuenio.setText(nombreDuenio);
+		txtTelf.setText(telf);
+		txtAreaObservacion.setText(obs);
+	}	
+
+	private Object[] idMascotaNombreDuenioTelf() {
+		Object[] arreglo = new Object[3];
+		
+		int fila = table_1.getSelectedRow();
+		int idMascota = (int)defaulTableModel.getValueAt(fila,0);
+		String nombreDuenio = (String)defaulTableModel.getValueAt(fila,6);
+		String telf = (String)defaulTableModel.getValueAt(fila,7);
+		
+		arreglo[0] = idMascota;
+		arreglo[1] = nombreDuenio;
+		arreglo[2] = telf;
+		return arreglo;
+	}
+	
 	
 }

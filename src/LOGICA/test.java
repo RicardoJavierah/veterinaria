@@ -9,6 +9,11 @@ public class test {
 		double num = Math.random();
 		//System.out.println(numeroAleatorio);
 		System.out.println(numero);
+		
+		Mascota mas = new Mascota(1, "wws","wws", "wws", "wws", "wws", "wws");
+		mas = new Mascota(3, "hola", "hola", "hola","hola", "hola", "hola");
+		
+		System.out.println(mas.getNombreMascota());
 	}
 
 }

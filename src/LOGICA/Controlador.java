@@ -7,16 +7,19 @@ import MODEL.MascotaModel;
 
 public class Controlador {
 	
+	//Variables Globales que vamos a usar en todo el controlador
+	Duenio duenio;
+	Mascota mascota;
+	
 	public boolean guardarDuenioMascota(String nombreDuenio,String telefono,int numCliente,String nombreMascota,
 									String raza,String color,String alergia,String atencion,String observacion) {
 		
-		Duenio duenio = new Duenio(nombreDuenio,telefono);
+		duenio = new Duenio(nombreDuenio,telefono);
 		
-		Mascota mascota = new Mascota(numCliente,nombreMascota,raza,color,alergia,atencion,observacion);
+		mascota = new Mascota(numCliente,nombreMascota,raza,color,alergia,atencion,observacion);
 		
 		DuenioModel duenioModel = new DuenioModel();
 		MascotaModel mascotaModel = new MascotaModel();
-		
 		
 		
 		if(duenioModel.guardarDuenio(duenio) == 1 ) {
@@ -38,4 +41,27 @@ public class Controlador {
 		return dueModel.mostrarDuenio();
 	}
 	
+	public void actualizarMascota(int numMascota,String nombreMascota,String raza,String color,String alergia,String atencion,String obs,int idCliente) {
+		mascota = new Mascota(numMascota, nombreMascota, raza, color, alergia, atencion, obs);
+		MascotaModel masModel = new MascotaModel();
+		masModel.actualizarMascota(mascota,idCliente);
+	}
+	
+	public void actualizarDuenio(String nombreDuenio,String telfDuenio,String nombre,String telf) {
+		duenio = new Duenio(nombreDuenio, telfDuenio);
+		DuenioModel dueModel = new DuenioModel();
+		dueModel.actualizarDuenio(duenio,nombre,telf);
+	}
+
+	public void eliminarMascota(int numCliente,String nombreMascota, String raza, String color, String alergia,String atencion,String observacion) {
+		mascota = new Mascota(numCliente,nombreMascota,raza,color,alergia,atencion,observacion);
+		MascotaModel masModel = new MascotaModel();
+		masModel.eliminarMascota(mascota);
+	}
+	
+	public void eliminarDuenio(String nombreCliente,String telfDueno) {
+		duenio = new Duenio(nombreCliente, telfDueno);
+		DuenioModel dueModel = new DuenioModel();
+		dueModel.eliminarDuenio(duenio);
+	}
 }

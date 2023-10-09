@@ -79,6 +79,7 @@ public class Inicio extends JFrame implements ActionListener {
 		contentPane.add(btnVerDatos);
 		
 		btnSalir = new JButton("Salir");
+		btnSalir.addActionListener(this);
 		btnSalir.setBackground(Color.LIGHT_GRAY);
 		btnSalir.setBounds(72, 279, 142, 30);
 		contentPane.add(btnSalir);
@@ -90,6 +91,9 @@ public class Inicio extends JFrame implements ActionListener {
 		contentPane.add(lblNewLabel_1);
 	}
 	public void actionPerformed(ActionEvent e) {
+		if (e.getSource() == btnSalir) {
+			actionPerformedBtnSalirJButton(e);
+		}
 		if (e.getSource() == btnCargarDatos) {
 			actionPerformedBtnCargarDatosJButton(e);
 		}else if(e.getSource() == btnVerDatos) {
@@ -107,6 +111,10 @@ public class Inicio extends JFrame implements ActionListener {
 		CRUD crud = new CRUD();
 		crud.setVisible(true);
 		crud.setLocationRelativeTo(null);
+		crud.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
 
+	}
+	protected void actionPerformedBtnSalirJButton(ActionEvent e) {
+		System.exit(ABORT);
 	}
 }
