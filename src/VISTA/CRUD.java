@@ -314,9 +314,7 @@ public class CRUD extends JFrame implements ActionListener, MouseListener {
 			defaulTableModel.addRow(new Object[] {listaMascotaMascota.get(i).getNumCliente(),listaMascotaMascota.get(i).getNombreMascota()
 									,listaMascotaMascota.get(i).getRaza(),listaMascotaMascota.get(i).getColor(),listaMascotaMascota.get(i).getAlergia(),
 									listaMascotaMascota.get(i).getAtencion(),listaDuenio.get(i).getNombreCliente(),listaDuenio.get(i).getTelfDueno(),listaMascotaMascota.get(i).getObservaciones()});
-		}
-		//btnlista.setEnabled(false);
-		
+		}		
 	}
 	
 	protected void actionPerformedBtnEliminarJButton(ActionEvent e) {
